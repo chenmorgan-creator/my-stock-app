@@ -30,8 +30,14 @@ export async function fetchStockPrices(stocks, onProgress) {
       // 🚀 關鍵修正：改抓每日K棒的收盤價 (indicators.quote[].close)，而不是 meta.regularMarketPrice
       // regularMarketPrice 這個欄位在收盤後如果有盤後交易，數值會持續跳動，不是鎖定的收盤價
       // range=5d&interval=1d 抓最近5個交易日的日K，並明確關閉盤前盤後資料，確保拿到的是「當天收盤定案」的價格
-      const targetUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?range=5d&interval=1d&includePrePost=false`;
-      const response = await fetchWithTimeout(`https://corsproxy.io/?${targetUrl}`, PRICE_FETCH_TIMEOUT_MS);
+      //
+      // 改用自己的 Vercel Serverless Function（/api/quote）當代理，伺服器對伺服器呼叫 Yahoo，
+      // 不再透過 corsproxy.io：它是公開免費服務，常對 *.vercel.app 這類來源整批封鎖（403），
+      // 跟股票代號本身無關，改成自架的 API route 後就不會再受它的黑名單影響。
+      const response = await fetchWithTimeout(
+        `/api/quote?symbol=${encodeURIComponent(symbol)}`,
+        PRICE_FETCH_TIMEOUT_MS
+      );
       if (response.ok) {
         const json = await response.json();
         const result = json?.chart?.result?.[0];
