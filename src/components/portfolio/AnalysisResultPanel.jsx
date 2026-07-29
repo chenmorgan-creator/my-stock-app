@@ -16,7 +16,8 @@ export default function AnalysisResultPanel({ analysisResult }) {
       <div className="space-y-3">
         <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">持股資產排行清單 (Market Value Ranking)</span>
         <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-          <table className="w-full text-left border-collapse">
+          <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse min-w-[640px]">
             <thead>
               <tr className="bg-slate-900 text-white text-xs uppercase tracking-wider">
                 <th className="py-3.5 px-4 font-black text-center w-16">排行</th>
@@ -40,6 +41,7 @@ export default function AnalysisResultPanel({ analysisResult }) {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     </>

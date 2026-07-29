@@ -93,7 +93,7 @@ export default function AccountValueChart({
   };
 
   return (
-    <div className="bg-white rounded-[2.5rem] shadow-xl border border-slate-100 p-8 relative flex flex-col">
+    <div className="bg-white rounded-3xl sm:rounded-[2.5rem] shadow-xl border border-slate-100 p-5 sm:p-8 relative flex flex-col">
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
         <div className="flex items-center gap-3">

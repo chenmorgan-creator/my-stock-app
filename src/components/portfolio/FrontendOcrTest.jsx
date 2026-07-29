@@ -384,7 +384,7 @@ export default function FrontendOcrTest() {
 
   return (
     <div className="font-sans text-slate-900 w-full mt-4">
-      <div className="max-w-4xl mx-auto bg-white p-8 rounded-[2.5rem] shadow-xl border border-slate-100">
+      <div className="max-w-4xl mx-auto bg-white p-5 sm:p-8 rounded-3xl sm:rounded-[2.5rem] shadow-xl border border-slate-100">
 
         <header className="mb-8 border-b pb-6 border-slate-100">
           <h2 className="text-2xl font-black tracking-tight text-slate-900">

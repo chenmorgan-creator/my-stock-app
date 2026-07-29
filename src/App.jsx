@@ -18,7 +18,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('portfolio');
 
   return (
-    <div style={{ padding: '40px 20px', fontFamily: 'sans-serif', backgroundColor: '#FFFFFF', minHeight: '100vh', color: '#0F172A' }}>
+    <div className="min-h-screen bg-white text-slate-900 font-sans px-4 py-8 sm:px-6 sm:py-10">
 
       {/* 強制顯示垂直捲軸，解決切換分頁時的左右跳動問題 */}
       <style>{`
@@ -27,30 +27,30 @@ function App() {
         }
       `}</style>
 
-      <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+      <div className="max-w-[1000px] mx-auto">
 
-        <h1 style={{ fontSize: '32px', fontWeight: 'bold', color: '#0F172A', marginBottom: '8px', textAlign: 'center' }}>
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2 text-center leading-snug">
           整合投資平台：量化分析與收益曲線
         </h1>
 
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', margin: '32px 0', borderBottom: '2px solid #E2E8F0', paddingBottom: '16px' }}>
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 my-6 sm:my-8 border-b-2 border-slate-200 pb-4">
           <button
             onClick={() => setActiveTab('portfolio')}
-            style={{
-              padding: '12px 24px', borderRadius: '8px', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer', border: 'none', transition: 'all 0.2s',
-              backgroundColor: activeTab === 'portfolio' ? '#0F172A' : 'transparent',
-              color: activeTab === 'portfolio' ? '#FFFFFF' : '#64748B'
-            }}
+            className={`px-4 py-2.5 sm:px-6 rounded-lg text-sm sm:text-base font-bold cursor-pointer border-none transition-all ${
+              activeTab === 'portfolio'
+                ? 'bg-slate-900 text-white'
+                : 'bg-transparent text-slate-500'
+            }`}
           >
             📊 投資組合量化分析
           </button>
           <button
             onClick={() => setActiveTab('yield')}
-            style={{
-              padding: '12px 24px', borderRadius: '8px', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer', border: 'none', transition: 'all 0.2s',
-              backgroundColor: activeTab === 'yield' ? '#0F172A' : 'transparent',
-              color: activeTab === 'yield' ? '#FFFFFF' : '#64748B'
-            }}
+            className={`px-4 py-2.5 sm:px-6 rounded-lg text-sm sm:text-base font-bold cursor-pointer border-none transition-all ${
+              activeTab === 'yield'
+                ? 'bg-slate-900 text-white'
+                : 'bg-transparent text-slate-500'
+            }`}
           >
             📈 美股收益分析系統
           </button>
@@ -58,13 +58,13 @@ function App() {
 
         <Suspense fallback={<TabLoadingFallback />}>
           {activeTab === 'portfolio' && (
-            <div style={{ animation: 'fadeIn 0.4s' }}>
+            <div className="animate-in fade-in duration-300">
               <FrontendOcrTest />
             </div>
           )}
 
           {activeTab === 'yield' && (
-            <div style={{ animation: 'fadeIn 0.4s' }}>
+            <div className="animate-in fade-in duration-300">
               <YieldAnalysis />
             </div>
           )}

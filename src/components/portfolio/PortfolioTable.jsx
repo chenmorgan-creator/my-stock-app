@@ -6,7 +6,8 @@
 export default function PortfolioTable({ tableData, onUpdateRow, onRemoveRow }) {
   return (
     <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-      <table className="w-full text-left border-collapse">
+      <div className="overflow-x-auto">
+      <table className="w-full text-left border-collapse min-w-[420px]">
         <thead>
           <tr className="bg-slate-900 text-white text-xs uppercase tracking-wider">
             <th className="py-3.5 px-4 font-black">股票代號 Ticker</th>
@@ -44,7 +45,7 @@ export default function PortfolioTable({ tableData, onUpdateRow, onRemoveRow }) 
               <td className="p-2 text-center">
                 <button
                   onClick={() => onRemoveRow(idx)}
-                  className="text-slate-300 hover:text-red-500 font-bold px-2 py-1 rounded transition-colors opacity-0 group-hover:opacity-100"
+                  className="text-slate-300 hover:text-red-500 font-bold px-2 py-1 rounded transition-colors opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
                   title="移除此行"
                 >
                   ✕
@@ -54,6 +55,7 @@ export default function PortfolioTable({ tableData, onUpdateRow, onRemoveRow }) 
           ))}
         </tbody>
       </table>
+      </div>
       {tableData.length === 0 && (
         <div className="text-center py-14 px-4">
           <p className="text-sm font-bold text-slate-500 mb-1">目前沒有任何持股資料</p>
