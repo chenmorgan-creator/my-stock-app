@@ -7,8 +7,11 @@
 //   呼叫端只需要提供圖片來源，以及想在哪些階段更新進度文字/百分比。
 
 import { useRef, useEffect } from 'react';
-import { createWorker } from 'tesseract.js';
 import { preprocessImageWithCanvas } from '../utils/ocr/imagePreprocess';
+
+// 🚀 效能優化：tesseract.js 是整個 bundle 裡最重的依賴，改成動態 import，
+// 只有使用者真的點擊「智慧載入」開始辨識時才會下載這包，
+// 不會拖慢一般使用者（例如只用「收益分析」頁籤的人）的首次進站速度。
 
 // 🚀 關鍵修正：一定要用 setParameters 才能真正生效，直接塞進 recognize() 的 options 裡是不會被套用的
 const TESSERACT_CHAR_WHITELIST = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.,$ \n';
@@ -40,6 +43,7 @@ export function useOcrWorker() {
     onStageChange?.('loadingEngine');
     if (!workerRef.current) {
       onStageChange?.('downloadingEngine');
+      const { createWorker } = await import('tesseract.js');
       workerRef.current = await createWorker('eng', 1, {
         logger: (m) => {
           if (m.status === 'recognizing text') {

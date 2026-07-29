@@ -1,6 +1,18 @@
-import { useState } from 'react';
-import YieldAnalysis from './components/yield/YieldAnalysis';
-import FrontendOcrTest from './components/portfolio/FrontendOcrTest';
+import { useState, lazy, Suspense } from 'react';
+
+// 🚀 效能優化：兩個分頁各自都會拉入 recharts（含 d3，未壓縮原始碼將近 9.4MB，是目前 bundle 裡最重的部分）。
+// 改成 lazy 動態載入後，一開始只會載入使用者實際打開的那個分頁，切換分頁時才載入另一個分頁的程式碼，
+// 而不是不管使用者看不看，兩個分頁的程式碼都先下載好。
+const YieldAnalysis = lazy(() => import('./components/yield/YieldAnalysis'));
+const FrontendOcrTest = lazy(() => import('./components/portfolio/FrontendOcrTest'));
+
+function TabLoadingFallback() {
+  return (
+    <div className="flex items-center justify-center py-24 text-slate-400 font-medium">
+      ⏳ 載入中...
+    </div>
+  );
+}
 
 function App() {
   const [activeTab, setActiveTab] = useState('portfolio');
@@ -44,17 +56,19 @@ function App() {
           </button>
         </div>
 
-        {activeTab === 'portfolio' && (
-          <div style={{ animation: 'fadeIn 0.4s' }}>
-            <FrontendOcrTest />
-          </div>
-        )}
+        <Suspense fallback={<TabLoadingFallback />}>
+          {activeTab === 'portfolio' && (
+            <div style={{ animation: 'fadeIn 0.4s' }}>
+              <FrontendOcrTest />
+            </div>
+          )}
 
-        {activeTab === 'yield' && (
-          <div style={{ animation: 'fadeIn 0.4s' }}>
-            <YieldAnalysis />
-          </div>
-        )}
+          {activeTab === 'yield' && (
+            <div style={{ animation: 'fadeIn 0.4s' }}>
+              <YieldAnalysis />
+            </div>
+          )}
+        </Suspense>
 
       </div>
     </div>
