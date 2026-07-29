@@ -33,23 +33,23 @@ function App() {
           整合投資平台：量化分析與收益曲線
         </h1>
 
-        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 my-6 sm:my-8 border-b-2 border-slate-200 pb-4">
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 my-6 sm:my-8 pb-4">
           <button
             onClick={() => setActiveTab('portfolio')}
-            className={`px-4 py-2.5 sm:px-6 rounded-lg text-sm sm:text-base font-bold cursor-pointer border-none transition-all ${
+            className={`px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl text-sm sm:text-base font-bold cursor-pointer transition-all shadow-sm ${
               activeTab === 'portfolio'
-                ? 'bg-slate-900 text-white'
-                : 'bg-transparent text-slate-500'
+                ? 'bg-slate-900 text-white border-2 border-slate-900 shadow-md'
+                : 'bg-white text-slate-500 border-2 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
             }`}
           >
             📊 投資組合量化分析
           </button>
           <button
             onClick={() => setActiveTab('yield')}
-            className={`px-4 py-2.5 sm:px-6 rounded-lg text-sm sm:text-base font-bold cursor-pointer border-none transition-all ${
+            className={`px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl text-sm sm:text-base font-bold cursor-pointer transition-all shadow-sm ${
               activeTab === 'yield'
-                ? 'bg-slate-900 text-white'
-                : 'bg-transparent text-slate-500'
+                ? 'bg-slate-900 text-white border-2 border-slate-900 shadow-md'
+                : 'bg-white text-slate-500 border-2 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
             }`}
           >
             📈 美股收益分析系統
