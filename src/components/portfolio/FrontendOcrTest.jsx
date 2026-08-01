@@ -7,6 +7,7 @@ import { useOcrWorker } from '../../hooks/useOcrWorker';
 import PortfolioTable from './PortfolioTable';
 import AnalysisResultPanel from './AnalysisResultPanel';
 import TreemapChart from './TreemapChart';
+import BackfillMarketValue from './BackfillMarketValue';
 import SheetsSettingsPanel from './SheetsSettingsPanel';
 
 // 💡 可在此處直接寫死專屬的 Google Sheets 網址，系統會以此為絕對優先預設值
@@ -515,6 +516,10 @@ export default function FrontendOcrTest() {
             onUpdateRow={handleUpdateRow}
             onRemoveRow={handleRemoveRow}
           />
+
+          <div className="mt-4">
+            <BackfillMarketValue holdings={tableData} />
+          </div>
         </div>
 
         {hasAnalyzed && analysisResult && (
