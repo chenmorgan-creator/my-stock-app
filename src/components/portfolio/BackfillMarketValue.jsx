@@ -19,7 +19,8 @@ export default function BackfillMarketValue({ holdings }) {
   const [isComputing, setIsComputing] = useState(false);
   const [statusMsg, setStatusMsg] = useState('');
   const [results, setResults] = useState(null);
-  const [copyLabel, setCopyLabel] = useState('📋 複製全部（可直接貼到 Google Sheets）');
+  const [copyDateLabel, setCopyDateLabel] = useState('📋 複製日期（貼到 A 欄）');
+  const [copyValueLabel, setCopyValueLabel] = useState('📋 複製市值（貼到 D 欄）');
 
   const validHoldingsCount = holdings.filter(
     h => h.ticker && h.ticker.trim() !== '' && h.shares !== '' && !isNaN(parseFloat(h.shares))
@@ -71,17 +72,27 @@ export default function BackfillMarketValue({ holdings }) {
     }
   };
 
-  const handleCopy = async () => {
+  const handleCopyDates = async () => {
     if (!results) return;
-    // Tab 分隔：貼到 Google Sheets 時，Tab 會自動被拆成不同欄位，
-    // 直接貼在 A 欄該列的儲存格，就會自動填進 A（日期）與下一欄（市值），
-    // 使用者只要確保貼上的起始儲存格對到 A 欄、且下一欄就是 D 欄（如果中間還有 B、C 欄，
-    // 貼上前建議先選取 D 欄該列再貼，或貼完後再手動搬移一次）。
-    const text = results.map(r => `${r.date}\t${r.marketValue.toFixed(2)}`).join('\n');
+    // 每個日期各自一行（不是同一行用 Tab 分隔），這樣貼到 Google Sheets 時
+    // 會直接一格一格往下填滿 A 欄，不會動到旁邊的 B、C 欄。
+    const text = results.map(r => r.date).join('\n');
     try {
       await navigator.clipboard.writeText(text);
-      setCopyLabel('✅ 已複製！');
-      setTimeout(() => setCopyLabel('📋 複製全部（可直接貼到 Google Sheets）'), 2000);
+      setCopyDateLabel('✅ 已複製日期！貼到 A 欄該列即可');
+      setTimeout(() => setCopyDateLabel('📋 複製日期（貼到 A 欄）'), 2500);
+    } catch (err) {
+      setStatusMsg('❌ 複製失敗，你的瀏覽器可能不支援自動複製，請手動選取表格內容複製。');
+    }
+  };
+
+  const handleCopyValues = async () => {
+    if (!results) return;
+    const text = results.map(r => r.marketValue.toFixed(2)).join('\n');
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopyValueLabel('✅ 已複製市值！貼到 D 欄該列即可');
+      setTimeout(() => setCopyValueLabel('📋 複製市值（貼到 D 欄）'), 2500);
     } catch (err) {
       setStatusMsg('❌ 複製失敗，你的瀏覽器可能不支援自動複製，請手動選取表格內容複製。');
     }
@@ -166,12 +177,26 @@ export default function BackfillMarketValue({ holdings }) {
                 </table>
               </div>
 
-              <button
-                onClick={handleCopy}
-                className="px-4 py-2 bg-slate-800 text-white text-sm font-bold rounded-lg hover:bg-slate-900 transition-colors"
-              >
-                {copyLabel}
-              </button>
+              <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs text-slate-600 leading-relaxed">
+                💡 貼上步驟：先點你 Sheet 裡<strong>最上面那個遺漏日期</strong>的 <strong>A 欄</strong>儲存格，貼上「日期」；
+                再點同一列的 <strong>D 欄</strong>儲存格，貼上「市值」。分兩次貼、各自往下自動填滿，
+                中間的 B、C 欄（尤其 C 欄的公式）完全不會被動到。
+              </div>
+
+              <div className="flex flex-wrap gap-3">
+                <button
+                  onClick={handleCopyDates}
+                  className="px-4 py-2 bg-slate-800 text-white text-sm font-bold rounded-lg hover:bg-slate-900 transition-colors"
+                >
+                  {copyDateLabel}
+                </button>
+                <button
+                  onClick={handleCopyValues}
+                  className="px-4 py-2 bg-slate-800 text-white text-sm font-bold rounded-lg hover:bg-slate-900 transition-colors"
+                >
+                  {copyValueLabel}
+                </button>
+              </div>
             </div>
           )}
         </div>
